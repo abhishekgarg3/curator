@@ -12,8 +12,8 @@ RUN python3 setup.py build_exe
 FROM alpine:3.7
 RUN apk --no-cache upgrade && apk --no-cache add openssl-dev
 COPY --from=builder build/exe.linux-x86_64-3.7 /curator/
-
+COPY actions.yml /curator/
+COPY curator.yml /curator/
 USER nobody:nobody
 ENV LD_LIBRARY_PATH /curator/lib:$LD_LIBRARY_PATH
-ENTRYPOINT ["/curator/curator"]
-
+ENTRYPOINT ["/curator/curator", "curator/actions.yml", "--config", "curator/curator.yml"]
